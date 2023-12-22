@@ -1,0 +1,38 @@
+{
+  "files": {
+    "main.css": "/static/css/main.f6331775.css",
+    "main.js": "/static/js/main.cb180199.js",
+    "static/media/Legacy+Castle+642.jpg": "/static/media/Legacy+Castle+642.2b82e9539b9391a595e2.jpg",
+    "static/media/231.jpg": "/static/media/231.87a79017d97d89a9726c.jpg",
+    "static/media/0078.jpg": "/static/media/0078.dcd899a224a67b32b000.jpg",
+    "static/media/JA205518.jpg": "/static/media/JA205518.537994b64c9ade3fb35f.jpg",
+    "static/media/165.jpg": "/static/media/165.20707fc319c9a5afb938.jpg",
+    "static/media/Legacy+Castle+614.jpg": "/static/media/Legacy+Castle+614.3615625388af4b269673.jpg",
+    "static/media/081.jpg": "/static/media/081.050ab24052c04260c826.jpg",
+    "static/media/1667.jpg": "/static/media/1667.b9e3612a0ff19c81f662.jpg",
+    "static/media/225.jpg": "/static/media/225.8c10b9f4cba15e8387c2.jpg",
+    "static/media/213.jpg": "/static/media/213.8b718e5499e6e1c31932.jpg",
+    "static/media/788.jpg": "/static/media/788.3fd1d02ec61b74ce8e2a.jpg",
+    "static/media/sf-pro-text_regular.ttf": "/static/media/sf-pro-text_regular.4750d88e1b7b470052f0.ttf",
+    "static/media/sf-pro-display_regular.ttf": "/static/media/sf-pro-display_regular.0b3401aed7002c987e40.ttf",
+    "static/media/1.jpg": "/static/media/1.cf9a36ba5d77b7c77360.jpg",
+    "static/media/F1-1.png": "/static/media/F1-1.c69ccec9401f98e27e0b.png",
+    "static/media/white-h-img-2.jpg": "/static/media/white-h-img-2.00d823308b2eee25207d.jpg",
+    "static/media/L-4.jpg": "/static/media/L-4.e287577be0478b9a0b88.jpg",
+    "static/media/white-h-img-3.jpg": "/static/media/white-h-img-3.148ce1a740515c2d93bb.jpg",
+    "static/media/2.jpg": "/static/media/2.aebad9ca1648bc6df071.jpg",
+    "static/media/white-h-img-1.jpg": "/static/media/white-h-img-1.3fd926d49f56da711b5b.jpg",
+    "static/media/white-h-img-4.jpg": "/static/media/white-h-img-4.3745697606b3869f864e.jpg",
+    "static/media/3.jpg": "/static/media/3.82cf92f37a334d01fa3b.jpg",
+    "static/media/personal-img-1.jpg": "/static/media/personal-img-1.fa79789b74d69fc1ecef.jpg",
+    "static/media/logo1.svg": "/static/media/logo1.301213e41dbffc59532b983d07db82b2.svg",
+    "static/media/redux.cjs": "/static/media/redux.f6cd7db3b857b93d3bca.cjs",
+    "index.html": "/index.html",
+    "main.f6331775.css.map": "/static/css/main.f6331775.css.map",
+    "main.cb180199.js.map": "/static/js/main.cb180199.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f6331775.css",
+    "static/js/main.cb180199.js"
+  ]
+}
