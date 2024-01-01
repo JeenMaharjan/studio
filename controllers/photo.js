@@ -40,7 +40,7 @@ const create = async (req, res) => {
 const getCategories = async (req, res) => {
     try {
         // Find all documents in the Photo collection
-        const categories = await Photo.find({}, 'title slug');
+        const categories = await Photo.find({}, 'title slug').sort({ createdAt: -1 });
 
         // Extract titles and slugs from the retrieved documents
         
@@ -207,7 +207,7 @@ const savePhoto = async (req, res) => {
 
 const getAllPhotos = async (req, res) => {
   try {
-    const allPhotos = await Photo.find({});
+    const allPhotos = await Photo.find({}).sort({ createdAt: -1 });
     res.json(allPhotos);
   } catch (error) {
     res.status(500).json({ error: 'Internal Server Error' });
@@ -276,12 +276,56 @@ const deleteSingleLandscape = async (req, res) => {
   }
 };
 
+const deleteSinglePhoto = async (req, res) => {
+  const { slug, images } = req.body;
+
+  try {
+    // Find the photo document based on the provided slug
+    const photo = await Photo.findOne({ slug });
+
+    if (!photo) {
+      return res.status(404).json({ error: 'Photo not found' });
+    }
+
+    // Check if photo.project.images is an array
+    if (!Array.isArray(photo.project[0]?.images)) {
+      return res.status(404).json({ error: 'Landscape images not found in the photo project' });
+    }
+
+    // Find the index of the landscape image in the images array
+    const landscapeIndex = photo.project[0].images.findIndex(
+      (image) => image.key === images.key
+    );
+
+    if (landscapeIndex === -1) {
+      return res.status(404).json({ error: 'Landscape image not found' });
+    }
+
+    // Extract the S3 key for the landscape image
+    const { Key, Bucket } = images;
+
+    // Delete the landscape image from S3
+    await removeImageCat({ Bucket, Key });
+
+    // Remove the landscape image from the images array
+    photo.project[0].images.splice(landscapeIndex, 1);
+
+    // Save the updated photo document
+    await photo.save();
+
+    res.status(200).json({ message: 'Landscape image deleted successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
 const getSinglePhotos = async (req, res) => {
   try {
       const { slug } = req.params;
 
       // Find the photo by slug
-      const photo = await Photo.findOne({ slug });
+      const photo = await Photo.findOne({ slug }).sort({ createdAt: -1 });
 
       if (!photo) {
           return res.status(404).json({ error: 'Photo not found' });
@@ -296,5 +340,5 @@ const getSinglePhotos = async (req, res) => {
 };
 module.exports = {
     create , getCategories , uploadBannerPhoto , saveBannerPhoto , saveLandscapePhoto, savePhoto , 
-    getAllPhotos , getSinglePhotos , deleteSingleLandscape
+    getAllPhotos , getSinglePhotos , deleteSingleLandscape , deleteSinglePhoto
   };

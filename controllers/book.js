@@ -2,7 +2,7 @@ const Book = require("../models/book.js");
 
 const create = async (req, res) => {
     try {
-        const { name, email, phone, address, location, dates , price } = req.body;
+        const { name, email, phone, address,  dates , price } = req.body;
 
         
 
@@ -12,7 +12,7 @@ const create = async (req, res) => {
             email,
             phone,
             address,
-            location,
+            
             price,
             dates,
         });
@@ -47,7 +47,7 @@ const getAllBooking = async (req, res) => {
 const getAllBookingRecords = async (req, res) => {
     try {
         // Use the find method to get all booking records
-        const bookingRecords = await Book.find();
+        const bookingRecords = await Book.find().sort({ createdAt: -1 });
 
         // Send the booking records as a response
         res.status(200).json(bookingRecords);

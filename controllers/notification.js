@@ -18,7 +18,7 @@ const create = async (req, res) => {
 
 const listAll = async (req, res) => {
     try {
-        const notifications = await Notification.find();
+        const notifications = await Notification.find().sort({ createdAt: -1 });
         res.json({
             success: true,
             data: notifications,

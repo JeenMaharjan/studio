@@ -47,7 +47,7 @@ const awsConfig = {
 
 const getCategories = async (req, res) => {
     try {
-        const categories = await Video.find();
+        const categories = await Video.find().sort({ createdAt: -1 });
         res.status(200).json(categories);
     } catch (error) {
         console.error("Error fetching video categories:", error);
@@ -229,7 +229,7 @@ const videoRemoveCat = async (params) => {
         const { slug } = req.params;
 
         // Find the video category using the provided slug
-        const videoCategory = await Video.findOne({slug});
+        const videoCategory = await Video.findOne({slug}).sort({ createdAt: -1 });
 
         if (!videoCategory) {
             return res.status(404).json({ error: "Video category not found" });
