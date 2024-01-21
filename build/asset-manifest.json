@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.afafccfb.css",
-    "main.js": "/static/js/main.a566e840.js",
+    "main.css": "/static/css/main.e29195c2.css",
+    "main.js": "/static/js/main.ed30d5d5.js",
     "static/media/col-2_5.jpg": "/static/media/col-2_5.7184280fd6262c250489.jpg",
     "static/media/col-3_5.jpg": "/static/media/col-3_5.b708f6846d072d68a3bf.jpg",
     "static/media/Legacy+Castle+642.jpg": "/static/media/Legacy+Castle+642.2b82e9539b9391a595e2.jpg",
@@ -42,11 +42,11 @@
     "static/media/logo1.svg": "/static/media/logo1.301213e41dbffc59532b983d07db82b2.svg",
     "static/media/redux.cjs": "/static/media/redux.f6cd7db3b857b93d3bca.cjs",
     "index.html": "/index.html",
-    "main.afafccfb.css.map": "/static/css/main.afafccfb.css.map",
-    "main.a566e840.js.map": "/static/js/main.a566e840.js.map"
+    "main.e29195c2.css.map": "/static/css/main.e29195c2.css.map",
+    "main.ed30d5d5.js.map": "/static/js/main.ed30d5d5.js.map"
   },
   "entrypoints": [
-    "static/css/main.afafccfb.css",
-    "static/js/main.a566e840.js"
+    "static/css/main.e29195c2.css",
+    "static/js/main.ed30d5d5.js"
   ]
 }
