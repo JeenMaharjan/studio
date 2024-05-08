@@ -71,7 +71,7 @@ const awsConfig = {
       const type = file.type.split("/")[1];
     
       const params = {
-        Bucket: "edemy-buckety", // Replace with your S3 bucket name
+        Bucket: "edemy-bucketyy", // Replace with your S3 bucket name
         Key: `studio/${nanoid()}.${type}`,
         Body: fileContent, // Use file content directly as Body
         ACL: "public-read",
@@ -129,7 +129,7 @@ const awsConfig = {
   
       // image params
       const params = {
-        Bucket: "edemy-buckety",
+        Bucket: "edemy-bucketyy",
         Key: `studio/${nanoid()}.${video.type.split("/")[1]}`,
         Body: readFileSync(video.path),
         ACL: "public-read",

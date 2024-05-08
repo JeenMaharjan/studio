@@ -15,25 +15,30 @@ const awsConfig = {
   const S3 = new AWS.S3(awsConfig);
 
 const create = async (req, res) => {
+    const { title } = req.body;
+    const slug = slugify(title);
+
     try {
-        const { title } = req.body;
+        // Check if the slug already exists in the database
+        const existingPhoto = await Photo.findOne({ slug });
 
-        // Create a slug from the title
-        const slug = slugify(title);
+        if (existingPhoto) {
+            return res.status(400).json({ error: "Slug already exists" });
+        }
 
-        // Create a new photo object
+        // Create the new photo category
         const newPhoto = new Photo({
             title,
             slug,
+        
         });
 
-        // Save the photo to the database
-        const savedPhoto = await newPhoto.save();
+        await newPhoto.save();
 
-        res.status(201).json(savedPhoto);
+        res.status(201).json({ message: "Photo category created successfully", newPhoto });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Internal Server Error" });
+        console.error("Error creating photo category:", error);
+        res.status(500).json({ error: "Internal server error" });
     }
 };
 
@@ -70,7 +75,7 @@ const uploadBannerPhoto = async (req, res) => {
           const type = file.type.split("/")[1];
         
           const params = {
-            Bucket: "edemy-buckety", // Replace with your S3 bucket name
+            Bucket: "edemy-bucketyy", // Replace with your S3 bucket name
             Key: `studio/${nanoid()}.${type}`,
             Body: fileContent, // Use file content directly as Body
             ACL: "public-read",
@@ -338,7 +343,152 @@ const getSinglePhotos = async (req, res) => {
       res.status(500).json({ error: 'Internal server error' });
   }
 };
+
+const deletePhotoCategory = async (req, res) => {
+  const { id } = req.body;
+
+  try {
+      // Find the photo document based on the provided _id
+      const photo = await Photo.findOne({ _id: id });
+
+      if (!photo) {
+          return res.status(404).json({ error: 'Photo category not found' });
+      }
+
+      // Iterate through projects and delete associated files from S3
+      for (const project of photo.project) {
+          if (project.bannerImage) {
+              await removeImageCat({ Bucket: project.bannerImage.Bucket, Key: project.bannerImage.Key });
+          }
+          if (project.images && project.images.length > 0) {
+              for (const image of project.images) {
+                  await removeImageCat({ Bucket: image.Bucket, Key: image.Key });
+              }
+          }
+          if (project.landscapeImages && project.landscapeImages.length > 0) {
+              for (const image of project.landscapeImages) {
+                  await removeImageCat({ Bucket: image.Bucket, Key: image.Key });
+              }
+          }
+      }
+
+      // Remove the entire project array (deleting all associated files)
+      photo.project = [];
+
+      // Save the updated photo document
+      await photo.save();
+
+      // Delete the entire photo category
+      await photo.remove();
+
+      res.status(200).json({ message: 'Photo category deleted successfully' });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+const allPhotoCategories = async (req, res) => {
+  try {
+      const categories = await Photo.aggregate([
+          {
+              $unwind: "$project" // Deconstruct the project array
+          },
+          {
+              $match: {
+                  "project.landscapeImages": { $ne: [] }, // Check if landscapeImages array is not empty
+                  "project.images": { $ne: [] } // Check if images array is not empty
+              }
+          },
+          {
+              $project: {
+                  _id: 1,
+                  title: 1,
+                  slug: 1
+              }
+          }
+      ]);
+      res.json(categories);
+  } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+const getSingleCategory = async (req, res) => {
+  try {
+    const { slug } = req.params;
+
+    // Find the video category using the provided slug
+    const photoCategory = await Photo.findOne({slug}).sort({ createdAt: -1 });
+
+    if (!photoCategory) {
+        return res.status(404).json({ error: "Photo category not found" });
+    }
+
+    // Do something with the found video category, e.g., send it in the response
+    return res.json(photoCategory);
+} catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal Server Error" });
+}
+}
+
+const updatePhotoCategory = async (req, res) => {
+  try {
+    const { title } = req.body;
+    const { slug } = req.params;
+
+    // Find the video category using the provided slug
+    const photoCategory = await Photo.findOne({ slug });
+
+    if (!photoCategory) {
+        return res.status(404).json({ error: "Photo category not found" });
+    }
+
+    // Update the title and displayVideo fields
+    photoCategory.title = title;
+
+
+    // Update the slug based on the updated title
+    photoCategory.slug = slugify(title);
+
+    // Save the updated document
+    await photoCategory.save();
+
+    // Send a success response
+    return res.json({ message: "Photo category updated successfully" });
+} catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal Server Error" });
+}
+}
+
+const getPhotoAggregate = async (req, res) => {
+  try {
+      const photos = await Photo.find({}, { title: 1, project: 1, slug:1 }).lean(); // Retrieve all documents with title and project fields
+
+      const result = photos.map(photo => {
+        const landscapeImageCount = photo.project.length > 0 ? photo.project.reduce((acc, curr) => acc + (curr.landscapeImages ? curr.landscapeImages.length : 0), 0) : 0;
+        const imagesCount = photo.project.length > 0 ? photo.project.reduce((acc, curr) => acc + (curr.images ? curr.images.length : 0), 0) : 0;
+
+        return {
+          _id: photo._id,
+          title: photo.title,
+          slug:photo.slug,
+          landscapeImage: landscapeImageCount,
+          images: imagesCount
+        };
+      });
+
+      res.json(result);
+  } catch (error) {
+      res.status(500).json({ error: "Internal server error" });
+  }
+}
+
 module.exports = {
     create , getCategories , uploadBannerPhoto , saveBannerPhoto , saveLandscapePhoto, savePhoto , 
-    getAllPhotos , getSinglePhotos , deleteSingleLandscape , deleteSinglePhoto
+    getAllPhotos , getSinglePhotos , deleteSingleLandscape , deleteSinglePhoto ,deletePhotoCategory , allPhotoCategories, 
+    getSingleCategory , updatePhotoCategory , getPhotoAggregate
   };

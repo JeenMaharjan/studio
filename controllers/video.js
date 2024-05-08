@@ -242,6 +242,79 @@ const videoRemoveCat = async (params) => {
         return res.status(500).json({ error: "Internal Server Error" });
     }
 };
+
+
+const allVideoCategories = async (req, res) => {
+  try {
+      const categories = await Video.aggregate([
+          {
+              $match: {
+                  displayVideo: { $exists: true },
+                  "project.video": { $exists: true, $ne: null }
+              }
+          },
+          {
+              $project: {
+                  _id: 1,
+                  title: 1,
+                  slug: 1
+              }
+          }
+      ]);
+      res.json(categories);
+  } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+const getVideoAggregate = async (req, res) => {
+  try {
+
+    const video = await Video.find({}, { title: 1, project: 1 }).lean(); 
+
+    const result = video.map(photo => {
+      const landscapeImageCount = photo.project.length > 0 ? photo.project.length  : 0
+      // const imagesCount = photo.project.length > 0 ? photo.project.reduce((acc, curr) => acc + (curr.images ? curr.images.length : 0), 0) : 0;
+
+      return {
+        _id: photo._id,
+        title: photo.title,
+        video: landscapeImageCount,
+       
+      };
+    });
+    
+
+      res.json(result);
+  } catch (error) {
+      res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+const getPhotoAggregate = async (req, res) => {
+  try {
+      const photos = await Photo.find({}, { title: 1, project: 1 }).lean(); // Retrieve all documents with title and project fields
+
+      const result = photos.map(photo => {
+        const landscapeImageCount = photo.project.length > 0 ? photo.project.reduce((acc, curr) => acc + (curr.landscapeImages ? curr.landscapeImages.length : 0), 0) : 0;
+        const imagesCount = photo.project.length > 0 ? photo.project.reduce((acc, curr) => acc + (curr.images ? curr.images.length : 0), 0) : 0;
+
+        return {
+          _id: photo._id,
+          title: photo.title,
+          landscapeImage: landscapeImageCount,
+          images: imagesCount
+        };
+      });
+
+      res.json(result);
+  } catch (error) {
+      res.status(500).json({ error: "Internal server error" });
+  }
+}
+
 module.exports = {
     create , getCategories , postVideo , deleteIndividualProject , getSingleVideoCategory , updateVideoCategory , deleteVideoCategory
+    ,allVideoCategories ,getVideoAggregate
   };
