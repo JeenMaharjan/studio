@@ -387,33 +387,39 @@ const deletePhotoCategory = async (req, res) => {
       res.status(500).json({ error: 'Internal server error' });
   }
 };
-
 const allPhotoCategories = async (req, res) => {
   try {
-      const categories = await Photo.aggregate([
-          {
-              $unwind: "$project" // Deconstruct the project array
-          },
-          {
-              $match: {
-                  "project.landscapeImages": { $ne: [] }, // Check if landscapeImages array is not empty
-                  "project.images": { $ne: [] } // Check if images array is not empty
-              }
-          },
-          {
-              $project: {
-                  _id: 1,
-                  title: 1,
-                  slug: 1
-              }
-          }
-      ]);
-      res.json(categories);
+    // Find all photos with landscapeImages and images
+    const categories = await Photo.find({
+      "project.landscapeImages": { $ne: [] }, // Check if landscapeImages array is not empty
+      "project.images": { $ne: [] } // Check if images array is not empty
+    }, {
+      _id: 1,
+      title: 1,
+      slug: 1,
+      pin: 1, // Include the pin field
+
+    }).lean(); // Convert to plain JavaScript objects
+
+    // Separate pinned photos
+    const pinnedPhotos = categories
+    .filter(category => category.pin)  
+    
+  // Sort unpinnedPhotos by createdAt in descending order
+  const unpinnedPhotos = categories
+    .filter(category => !category.pin)
+
+
+    // Concatenate pinned photos at the beginning
+    const sortedCategories = pinnedPhotos.concat(unpinnedPhotos);
+
+    res.json(sortedCategories);
   } catch (err) {
-      console.error(err);
-      res.status(500).json({ error: 'Internal server error' });
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
   }
 };
+
 
 const getSingleCategory = async (req, res) => {
   try {
@@ -436,8 +442,9 @@ const getSingleCategory = async (req, res) => {
 
 const updatePhotoCategory = async (req, res) => {
   try {
-    const { title } = req.body;
+    const { title , pin } = req.body;
     const { slug } = req.params;
+    
 
     // Find the video category using the provided slug
     const photoCategory = await Photo.findOne({ slug });
@@ -449,7 +456,7 @@ const updatePhotoCategory = async (req, res) => {
     // Update the title and displayVideo fields
     photoCategory.title = title;
 
-
+    photoCategory.pin = pin
     // Update the slug based on the updated title
     photoCategory.slug = slugify(title);
 

@@ -45,15 +45,7 @@ const awsConfig = {
     }
 };
 
-const getCategories = async (req, res) => {
-    try {
-        const categories = await Video.find().sort({ createdAt: -1 });
-        res.status(200).json(categories);
-    } catch (error) {
-        console.error("Error fetching video categories:", error);
-        res.status(500).json({ error: "Internal server error" });
-    }
-};
+
 
 
 const postVideo = async (req, res) => {
@@ -85,7 +77,7 @@ const postVideo = async (req, res) => {
 
 const updateVideoCategory = async (req, res) => {
     try {
-        const { title, displayVideo } = req.body;
+        const { title, displayVideo , pin } = req.body;
         const { slug } = req.params;
 
         // Find the video category using the provided slug
@@ -98,6 +90,7 @@ const updateVideoCategory = async (req, res) => {
         // Update the title and displayVideo fields
         videoCategory.title = title;
         videoCategory.displayVideo = displayVideo;
+        videoCategory.pin = pin ;
 
         // Update the slug based on the updated title
         videoCategory.slug = slugify(title);
@@ -250,21 +243,45 @@ const allVideoCategories = async (req, res) => {
           {
               $match: {
                   displayVideo: { $exists: true },
-                  "project.video": { $exists: true, $ne: null }
+                
               }
           },
           {
               $project: {
                   _id: 1,
                   title: 1,
-                  slug: 1
+                  slug: 1 ,
+                  pin:1
               }
           }
       ]);
-      res.json(categories);
+      const pinnedVideos = categories
+      .filter(category => category.pin)  
+      
+    // Sort unpinnedPhotos by createdAt in descending order
+    const unpinnedVideos = categories
+      .filter(category => !category.pin)
+  
+  
+      // Concatenate pinned photos at the beginning
+      const sortedCategories = pinnedVideos.concat(unpinnedVideos);
+  
+      res.json(sortedCategories);
+     
   } catch (err) {
       console.error(err);
       res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+const getCategories = async (req, res) => {
+  try {
+      const categories = await Video.find().sort({ createdAt: -1 });
+      
+      res.status(200).json(categories);
+  } catch (error) {
+      console.error("Error fetching video categories:", error);
+      res.status(500).json({ error: "Internal server error" });
   }
 };
 

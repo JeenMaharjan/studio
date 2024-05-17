@@ -25,6 +25,10 @@ const videoSchema = new mongoose.Schema({
         type: String,
         lowercase: true,
     },
+    pin:{
+        type:Boolean,
+        default:false
+    },
     displayVideo: {},
     project:[vidSchema]
 })

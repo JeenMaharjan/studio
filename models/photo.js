@@ -29,6 +29,10 @@ const photoSchema = new mongoose.Schema({
      
     
     },
+    pin:{
+        type:Boolean,
+        default:false
+    },
     project:[imageSchema]
 })
 
