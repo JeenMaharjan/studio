@@ -1,7 +1,8 @@
 {
   "files": {
-    "main.css": "/static/css/main.bdf49910.css",
-    "main.js": "/static/js/main.aa607b55.js",
+    "main.css": "/static/css/main.a8d29fbc.css",
+    "main.js": "/static/js/main.674d231d.js",
+    "static/media/4k.mp4": "/static/media/4k.ccda1d886874844c810c.mp4",
     "static/media/Legacy+Castle+614.jpg": "/static/media/Legacy+Castle+614.3615625388af4b269673.jpg",
     "static/media/back1.png": "/static/media/back1.3550dc80a31d18b1ec75.png",
     "static/media/profile1.jpg": "/static/media/profile1.c341acd44fd5209f8177.jpg",
@@ -32,13 +33,14 @@
     "static/media/insta-icon.png": "/static/media/insta-icon.2baeacde456082159140.png",
     "static/media/whatsapp.png": "/static/media/whatsapp.c0dc5845709b63fde1cd.png",
     "static/media/logo1.svg": "/static/media/logo1.301213e41dbffc59532b983d07db82b2.svg",
+    "static/media/logo2.svg": "/static/media/logo2.f82923a96f8016f1e85e727c4aa3eb66.svg",
     "static/media/redux.cjs": "/static/media/redux.f6cd7db3b857b93d3bca.cjs",
     "index.html": "/index.html",
-    "main.bdf49910.css.map": "/static/css/main.bdf49910.css.map",
-    "main.aa607b55.js.map": "/static/js/main.aa607b55.js.map"
+    "main.a8d29fbc.css.map": "/static/css/main.a8d29fbc.css.map",
+    "main.674d231d.js.map": "/static/js/main.674d231d.js.map"
   },
   "entrypoints": [
-    "static/css/main.bdf49910.css",
-    "static/js/main.aa607b55.js"
+    "static/css/main.a8d29fbc.css",
+    "static/js/main.674d231d.js"
   ]
 }
