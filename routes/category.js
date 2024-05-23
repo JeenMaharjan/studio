@@ -7,6 +7,14 @@ const { create, getAllCategory, uploadImage, removeImage,
         videoUpload, videoRemove, addProject, categoryWithProject, getProject, updateProject, 
         deleteCategory, deleteProject } = require("../controllers/category.js");
 
+        // Configure formidable for large file uploads
+        const formidableConfig = {
+          encoding: 'utf-8',
+          uploadDir: 'C:/tmp', // Ensure this directory exists and is writable
+          keepExtensions: true,
+          maxFileSize: 1024 * 1024 * 1024 // 1GB
+        };
+
 router.post("/create-category",requireSignin, create);
 
 router.get("/allcategory",requireSignin, getAllCategory);
@@ -15,7 +23,7 @@ router.post("/project/remove-image", removeImage);
 router.post(
     "/project/upload-video",
     
-    formidable(),
+    formidable(formidableConfig),
     videoUpload
   );
 router.post("/project/remove-video",  videoRemove);

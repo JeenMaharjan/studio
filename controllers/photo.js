@@ -391,14 +391,17 @@ const allPhotoCategories = async (req, res) => {
   try {
     // Find all photos with landscapeImages and images
     const categories = await Photo.find({
-      "project.landscapeImages": { $ne: [] }, // Check if landscapeImages array is not empty
-      "project.images": { $ne: [] } // Check if images array is not empty
+      "project": {
+        $elemMatch: {
+          "landscapeImages": { $ne: [] },
+          "images": { $ne: [] }
+        }
+      }
     }, {
       _id: 1,
       title: 1,
       slug: 1,
-      pin: 1, // Include the pin field
-
+      pin: 1 // Include the pin field
     }).lean(); // Convert to plain JavaScript objects
 
     // Separate pinned photos

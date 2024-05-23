@@ -1,15 +1,37 @@
-
-
 {
-  "theme_color":"#000000",
-  "background_color":"#2EC6FE",
-  "icons":[
-    {"purpose":"maskable","sizes":"512x512","src":"icon512_maskable.png","type":"image/png"},{"purpose":"any","sizes":"512x512","src":"icon512_rounded.png","type":"image/png"}
-  ],
-  "orientation":"any",
-  "display":"standalone",
-  "dir":"auto",
-  "lang":"en-US",
-  "name":"Image Tech Studio",
-  "short_name":"Photography"
+  "name": "Image Tech Studio",
+  "short_name": "Image Tech Studio",
+  "theme_color": "#000000",
+  "background_color": "#000000",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "11.png",
+      "sizes": "196x196",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "11.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "11.png",
+      "type": "image/png",
+      "sizes": "256x256"
+    },
+    {
+      "src": "11.png",
+      "type": "image/png",
+      "sizes": "384x384"
+    },
+    {
+      "src": "11.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
 }

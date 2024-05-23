@@ -49,7 +49,7 @@ exports.login = async(req, res) => {
             if (!match || err) return res.status(400).send("Wrong password");
             // GENERATE A TOKEN THEN SEND AS RESPONSE TO CLIENT
             let token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
-                expiresIn: "7d",
+                expiresIn: "5h",
             });
             res.json({
                 token,
