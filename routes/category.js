@@ -18,10 +18,10 @@ const { create, getAllCategory, uploadImage, removeImage,
 router.post("/create-category",requireSignin, create);
 
 router.get("/allcategory",requireSignin, getAllCategory);
-router.post("/project/upload-image", formidable(), uploadImage);
+router.post("/project/upload-image/:slug", formidable(), uploadImage);
 router.post("/project/remove-image", removeImage);
 router.post(
-    "/project/upload-video",
+    "/project/upload-video/:slug",
     
     formidable(formidableConfig),
     videoUpload

@@ -57,6 +57,8 @@ const awsConfig = {
  const uploadImage = async (req, res) => {
   try {
     const { files} = req; // Extract slug from req.body
+    const {slug} = req.params
+
 
 
     if (!files || Object.keys(files).length === 0) {
@@ -73,7 +75,7 @@ const awsConfig = {
     
       const params = {
         Bucket: "edemy-bucketyy", // Replace with your S3 bucket name
-        Key: `studio/images/${nanoid()}.${type}`,
+        Key: `studio/images/${slug}/${nanoid()}.${type}`,
         Body: fileContent, // Use file content directly as Body
         ACL: "public-read",
         ContentType: `image/${type}`,
@@ -126,12 +128,13 @@ const awsConfig = {
     try {
     
       const { video } = req.files;
+      const {slug} = req.params
       if (!video) return res.status(400).send("No video");
       const fileStream = fs.createReadStream(video.path);
       // image params
       const params = {
         Bucket: "edemy-bucketyy",
-        Key: `studio/video/${nanoid()}.${video.type.split("/")[1]}`,
+        Key: `studio/video/${slug}/${nanoid()}.${video.type.split("/")[1]}`,
         Body: fileStream,
         ACL: "public-read",
         ContentType: video.type,

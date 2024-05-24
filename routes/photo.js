@@ -15,7 +15,7 @@ router.put("/update-indiviual-photo/:slug", requireSignin , updatePhotoCategory)
 
 router.get("/get-photo-categories/:slug", getSingleCategory);
 router.get("/all-photo-categories", allPhotoCategories);
-router.post("/upload-banner-photo", formidable(), requireSignin , uploadBannerPhoto);
+router.post("/upload-banner-photo/:slug", formidable(), requireSignin , uploadBannerPhoto);
 router.delete("/delete-photo-category", requireSignin , deletePhotoCategory);
 router.post("/save-banner-photo",  requireSignin , saveBannerPhoto);
 router.post("/save-landscape-photo",  requireSignin , saveLandscapePhoto);

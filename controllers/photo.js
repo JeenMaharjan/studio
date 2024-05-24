@@ -60,7 +60,7 @@ const getCategories = async (req, res) => {
 const uploadBannerPhoto = async (req, res) => {
     try {
         const { files } = req;
-        
+        const {slug} = req.params
         
         if (!files || Object.keys(files).length === 0) {
           return res.status(400).send("No files provided.");
@@ -76,7 +76,7 @@ const uploadBannerPhoto = async (req, res) => {
         
           const params = {
             Bucket: "edemy-bucketyy", // Replace with your S3 bucket name
-            Key: `studio/${nanoid()}.${type}`,
+            Key: `studio/banner/${slug}/${nanoid()}.${type}`,
             Body: fileContent, // Use file content directly as Body
             ACL: "public-read",
             ContentType: `image/${type}`,
